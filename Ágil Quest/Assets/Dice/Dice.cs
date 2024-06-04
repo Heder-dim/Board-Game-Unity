@@ -1,17 +1,22 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Dice : MonoBehaviour
 {
     private Sprite[] diceSides;
     private SpriteRenderer rend;
 
+
     public TurnManager turnManager; // Referência ao TurnManager
+    public GameObject espere;
+    public Quest quest;
 
     private void Start()
     {
         rend = GetComponent<SpriteRenderer>();
         diceSides = Resources.LoadAll<Sprite>("DiceSides/");
+
     }
 
     private void OnMouseDown()
@@ -36,6 +41,7 @@ public class Dice : MonoBehaviour
 
         finalSide = randomDiceSide + 1;
         Debug.Log(finalSide);
+        espere.SetActive(true);
 
         if (turnManager.currentPlayer == 1)
         {
@@ -46,10 +52,14 @@ public class Dice : MonoBehaviour
             turnManager.player2.GetComponent<PlayerMovement>().MovePlayer(finalSide);
         }
 
-        yield return new WaitForSeconds(0.5f); // Espera para garantir que o movimento foi concluído
+        yield return new WaitForSeconds(1.0f);
 
         // Finaliza o turno e passa para o próximo jogador
         turnManager.EndTurn();
+        espere.SetActive(false);
+
+        int random = Random.Range(0, 15);
+        quest.setQuest(random, finalSide, turnManager.currentPlayer);
     }
 
     public void EnableDice()
