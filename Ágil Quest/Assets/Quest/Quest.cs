@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,10 +58,18 @@ public class Quest : MonoBehaviour
             Debug.Log("Resposta correta!");
             // Lógica para quando a resposta está correta
             questions[currentQuestionIndex].SetActive(false);
-            if(player == 1)
-                ponto1.text = pontos.ToString();
+            if (player == 1)
+            {
+                int valor = int.Parse(ponto1.text);
+                valor += pontos;
+                ponto1.text = valor.ToString();
+            }
             else
-                ponto2.text = pontos.ToString();
+            {
+                int valor = int.Parse(ponto2.text);
+                valor += pontos;
+                ponto2.text = valor.ToString();
+            }
             DisplayMessage("Parabéns!!");
         }
         else
@@ -74,6 +83,8 @@ public class Quest : MonoBehaviour
 
 
     }
+
+    
     public void DisplayMessage(string message)
     {
         StartCoroutine(DisplayMessageCoroutine(message));

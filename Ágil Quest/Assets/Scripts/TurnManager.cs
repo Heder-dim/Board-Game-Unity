@@ -1,15 +1,18 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
     public GameObject player1;
     public GameObject player2;
-    public Dice dice; // Referência ao dado
+    public Dice dice; 
 
     private PlayerMovement player1Movement;
     private PlayerMovement player2Movement;
     public int currentPlayer = 1; // Começa com o Player 1
-
+    
     void Start()
     {
         player1Movement = player1.GetComponent<PlayerMovement>();
@@ -19,8 +22,10 @@ public class TurnManager : MonoBehaviour
         SetActivePlayer();
     }
 
+
     void SetActivePlayer()
     {
+
         if (currentPlayer == 1)
         {
             player1Movement.enabled = true;
@@ -32,6 +37,8 @@ public class TurnManager : MonoBehaviour
             player2Movement.enabled = true;
         }
     }
+    
+ 
 
     public void EndTurn()
     {
@@ -42,4 +49,6 @@ public class TurnManager : MonoBehaviour
         // Permitir que o próximo jogador role o dado
         dice.EnableDice();
     }
+
+
 }

@@ -58,7 +58,7 @@ public class Dice : MonoBehaviour
         turnManager.EndTurn();
         espere.SetActive(false);
 
-        int random = Random.Range(0, 15);
+        int random = Random.Range(1, 15);
         quest.setQuest(random, finalSide, turnManager.currentPlayer);
     }
 

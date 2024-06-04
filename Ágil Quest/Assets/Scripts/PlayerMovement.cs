@@ -10,7 +10,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetPosition;
     private bool isMoving = false;
     private int cima, baixo, dir, esq;
-
+    public Win win;
+    private bool hasReachedGoal = false;// Variável para verificar se o objetivo foi alcançado
+    public bool chega1, chega2;
     void Start()
     {
         targetPosition = transform.position;
@@ -25,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
             if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
             {
                 transform.position = targetPosition;
-                isMoving = false; // Movimento completo
+                isMoving = false;
             }
         }
     }
@@ -39,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
             dir = 0;
             esq = 0;
             Debug.Log("cima");
-
         }
         else if (collision.gameObject.CompareTag("dir"))
         {
@@ -65,17 +66,35 @@ public class PlayerMovement : MonoBehaviour
             cima = 0;
             Debug.Log("baixo");
         }
+        else if (collision.gameObject.CompareTag("chegada"))
+        {
+            win.setchegada(chega1, chega2);
+            baixo = 0;
+            esq = 0;
+            dir = 0;
+            cima = 0;
+            hasReachedGoal = true;  // Define como true para indicar que o objetivo foi alcançado
+        }
     }
 
     public void MovePlayer(int steps)
     {
-        StartCoroutine(MoveSteps(steps));
+        if (!hasReachedGoal)  // Verifica se o objetivo foi alcançado antes de iniciar o movimento
+        {
+            StartCoroutine(MoveSteps(steps));
+        }
     }
 
     private IEnumerator MoveSteps(int steps)
     {
         for (int i = 0; i < steps; i++)
         {
+            // Se o objetivo foi alcançado, interrompe a movimentação
+            if (hasReachedGoal)
+            {
+                yield break;
+            }
+
             // Movimenta um passo e aguarda até que a movimentação seja concluída
             if (cima == 1)
             {
